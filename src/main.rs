@@ -43,6 +43,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = SocketAddrV4::new(Ipv4Addr::LOCALHOST, options.upstream);
     let listener = TcpListener::bind(addr).await?;
 
+    if !options.quiet {
+        println!("listening on {addr}...");
+    }
+
     loop {
         let (mut upstream, client) = listener.accept().await?;
 
