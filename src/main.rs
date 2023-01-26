@@ -36,7 +36,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let duration =
             Duration::from_millis(options.latency + thread_rng().gen_range(0..=options.jitter));
         let time = Instant::now() + duration;
-        *prev = (*prev).max(time);
+        *prev = (*prev + Duration::from_millis(1)).max(time);
         prev.clone().into()
     };
 
