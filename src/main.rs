@@ -14,9 +14,9 @@ struct Options {
     /// Upstream TCP port on localhost (to forward connections from).
     #[structopt(short, long, default_value = "8081")]
     upstream: u16,
-    /// Downstream TCP port on localhost (to forward connections to).
-    #[structopt(short, long, default_value = "8080")]
-    downstream: u16,
+    /// Downstream TCP domain/ip/port (to forward connections to).
+    #[structopt(short, long, default_value = "127.0.0.1:8080")]
+    downstream: String,
     /// Base one-way latency (millis).
     #[structopt(short, long, default_value = "75")]
     latency: u64,
@@ -48,6 +48,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     loop {
+        let downstream = options.downstream.clone();
         let (mut upstream, client) = listener.accept().await?;
 
         if !options.quiet {
@@ -60,9 +61,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 to_upstream: bool,
             }
 
-            let mut downstream =
-                TcpStream::connect(SocketAddrV4::new(Ipv4Addr::LOCALHOST, options.downstream))
-                    .await?;
+            let mut downstream = TcpStream::connect(&downstream).await?;
             let mut queue = DelayQueue::new();
 
             // Hack: make sure the queue is never empty.

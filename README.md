@@ -23,7 +23,7 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
-    -d, --downstream <downstream>    Downstream TCP port on localhost (to forward connections to) [default: 8080]
+    -d, --downstream <downstream>    Downstream TCP domain/ip/port (to forward connections to) [default: 127.0.0.1:8080]
     -j, --jitter <jitter>            Max additional one-way latency (millis) [default: 25]
     -l, --latency <latency>          Base one-way latency (millis) [default: 75]
     -u, --upstream <upstream>        Upstream TCP port on localhost (to forward connections from) [default: 8081]
