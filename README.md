@@ -2,6 +2,16 @@
 
 A TCP proxy that simulates latency and jitter.
 
+## Deprecation
+The following is much better (more flexibility, supports UDP, packet-wise):
+```console
+# one-way latency, jitter, correlation, loss, corruption
+sudo tc qdisc add dev lo root netem delay 50ms 10ms 25% loss 5% corrupt 1%
+
+# undo
+sudo tc qdisc delete dev lo root
+```
+
 ## Installation
 
 ```console
